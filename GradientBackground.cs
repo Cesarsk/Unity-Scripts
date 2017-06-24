@@ -6,6 +6,8 @@
 //this version of the script can change color dynamically (runtime) 
 //and loads a shader called Vertex Color Only.shader placed in assets/materials/
 
+//Made by Cesarsk https://github.com/Cesarsk
+
 public class GradientBackground : MonoBehaviour
 {
     public Color topColor = Color.blue;
