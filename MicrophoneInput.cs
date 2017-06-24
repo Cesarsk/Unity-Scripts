@@ -3,6 +3,8 @@
 //this snippet is an updated and enhanced version of a script found somewhere with no copyrights.
 //the owner can contact me if he claims the property of this script
 
+//Made by Cesarsk https://github.com/Cesarsk
+
 bool flag = false;
 
 void MicrophoneInput()
