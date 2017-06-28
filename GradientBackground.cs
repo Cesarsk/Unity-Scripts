@@ -3,6 +3,8 @@
 //this is a enhanced and updated version (works with Unity 5.6.1f1) of a script which allows users 
 //to set a gradient background in their camera component
 
+//Usage: attach the script to your camera component, create a material and attach the shader Vertex in this repository, then attach the material you created to this script
+
 //this version of the script can change color dynamically (runtime) 
 //and loads a shader called Vertex Color Only.shader placed in assets/materials/
 
@@ -10,23 +12,26 @@
 
 public class GradientBackground : MonoBehaviour
 {
+    public static GradientBackground instance;
     public Color topColor = Color.blue;
     public Color bottomColor = Color.white;
     public int gradientLayer = 7;
-    public static bool updateColorRuntime = false;
     Mesh mesh;
+    public Material mat;
 
     private void Update()
     {
-        if (!updateColorRuntime)
-        {
-            mesh.colors = new Color[4] { topColor, topColor, bottomColor, bottomColor };
-            //if you need to update just once, you can disable the variable after used it
-            updateColorRuntime = false;
-        }
+        mesh.colors = new Color[4] { topColor, topColor, bottomColor, bottomColor };
     }
 
-    void Awake()
+    private void Awake()
+    {
+        //Singleton D.P.
+        if (instance != null) Destroy(gameObject);
+        else instance = this;
+    }
+
+    void Start()
     {
         gradientLayer = Mathf.Clamp(gradientLayer, 0, 31);
         if (!GetComponent<Camera>())
@@ -48,12 +53,12 @@ public class GradientBackground : MonoBehaviour
         mesh.colors = new Color[4] { topColor, topColor, bottomColor, bottomColor };
 
         mesh.triangles = new int[6] { 0, 1, 2, 1, 3, 2 };
-        Shader shader = Shader.Find("Vertex Color Only");
-        Material mat = new Material(shader);
+       // Material mat = new Material(Shader.Find("Vertex Color Only"));
         GameObject gradientPlane = new GameObject("Gradient Plane", typeof(MeshFilter), typeof(MeshRenderer));
 
         ((MeshFilter)gradientPlane.GetComponent(typeof(MeshFilter))).mesh = mesh;
         gradientPlane.GetComponent<Renderer>().material = mat;
         gradientPlane.layer = gradientLayer;
     }
+
 }
